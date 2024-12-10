@@ -15,7 +15,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findByCompte(Compte compte);
 
-    @Query("SELECT SUM(t.type) FROM Transaction t")
+    @Query("SELECT SUM(t.montant) FROM Transaction t WHERE t.type = :type")
     double sumByType(TypeTransaction type);
 
 }
