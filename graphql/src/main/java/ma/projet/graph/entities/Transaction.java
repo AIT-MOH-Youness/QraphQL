@@ -12,19 +12,18 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private double montant;
 
-    private Date date;
+    @Temporal(TemporalType.DATE)
+    private Date dateTransaction;
 
     @Enumerated(EnumType.STRING)
     private TypeTransaction type;
 
     @ManyToOne
-    @JoinColumn(name = "compte_id")
     private Compte compte;
+
 }

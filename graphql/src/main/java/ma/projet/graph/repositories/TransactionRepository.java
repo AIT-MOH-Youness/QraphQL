@@ -2,6 +2,7 @@ package ma.projet.graph.repositories;
 
 import ma.projet.graph.entities.Compte;
 import ma.projet.graph.entities.Transaction;
+import ma.projet.graph.entities.TypeCompte;
 import ma.projet.graph.entities.TypeTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findByCompte(Compte compte);
 
-    @Query("SELECT SUM(t.montant) FROM Transaction t WHERE t.type = :type")
-    Double sumByType(TypeTransaction type);
+    @Query("SELECT SUM(t.type) FROM Transaction t")
+    double sumByType(TypeTransaction type);
+
 }

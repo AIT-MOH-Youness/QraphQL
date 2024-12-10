@@ -1,16 +1,31 @@
+# Définition du schéma GraphQL
 enum TypeCompte {
     COURANT
     EPARGNE
 }
 
+enum TypeTransaction {
+    RETRAIT
+    DEPOT
+}
+
+# Type Transaction
+type Transaction {
+    id: ID!
+    montant: Float
+    dateTransaction: String
+    type: TypeTransaction
+    compte: Compte
+}
+
 type Query {
     allComptes: [Compte]
-    compteById(id: ID): Compte
-    compteByType(type: TypeCompte): [Compte]  # Nouvelle requête pour récupérer les comptes par type
+    compteById(id : ID):Compte
     totalSolde: SoldeStats
-    compteTransactions(id: ID): [Transaction]  # Transactions d'un compte
-    allTransactions: [Transaction]            # Toutes les transactions
-    transactionStats: TransactionStats        # Statistiques globales
+    compteByType(type : TypeCompte):[Compte]
+    compteTransaction(id : ID):[Transaction]
+    AllTransactions:[Transaction]
+    transactionStats:TransactionStats
 }
 
 type Compte {
@@ -22,15 +37,10 @@ type Compte {
 
 type Mutation {
     saveCompte(compte: CompteRequest): Compte
-    deleteCompte(id: ID!): Boolean  # 'id' est obligatoire pour la suppression
-    addTransaction(transaction: TransactionRequest): Transaction
+    addTransaction(transactionRequest: TransactionRequest!): Transaction
+    deleteCompte(id: ID!): Boolean
 }
-input TransactionRequest {
-    compteId: ID!
-    montant: Float!
-    date: String!
-    type: TypeTransaction!
-}
+
 
 input CompteRequest {
     solde: Float
@@ -38,25 +48,24 @@ input CompteRequest {
     type: TypeCompte
 }
 
-type SoldeStats {
-    count: Int
-    sum: Float
-    average: Float
-}
-enum TypeTransaction {
-    DEPOT
-    RETRAIT
+input TransactionRequest {
+    montant: Float!
+    dateTransaction: String!
+    type: TypeTransaction!
+    compteId: Int!
 }
 
-type Transaction {
-    id: ID
-    montant: Float
-    date: String
-    type: TypeTransaction
-    compte: Compte
+
+# Définition du type SoldeStats
+type SoldeStats {
+    count: Int    # Nombre total de comptes
+    sum: Float    # Somme des soldes
+    average: Float # Moyenne des soldes
 }
+
+# Définition du type TransactionStats
 type TransactionStats {
-    count: Int
-    sumDepots: Float
-    sumRetraits: Float
+    count: Int    # Nombre total de transactions
+    sum: Float    # Somme des transactions
+    average: Float # Moyenne des transactions
 }

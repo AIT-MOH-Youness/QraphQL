@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface CompteRepository extends JpaRepository<Compte, Long> {
+    List<Compte> findByType(TypeCompte type);
+
     @Query("SELECT SUM(c.solde) FROM Compte c")
     double sumSoldes();
-
-    List<Compte> findByType(TypeCompte type);
 }
